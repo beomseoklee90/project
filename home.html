@@ -10,14 +10,14 @@
 <body>
 
         <div class="d-flex justify-content-center align-items-center mx-auto" style="height: 100vh;">
-            <div class="d-inline-block bg-light text-end overflow-auto" style="width:450px;height:750px">
+            <div class="d-inline-block bg-light text-end" style="width:450px;height:750px">
                 <div class="d-inline-block w-100" style="height:100px">
                     <span id="korean" class="fs-4 fw-bold">Korean</span>&nbsp;/&nbsp;<span id="japanese" class="fs-4">Japanese</span>
                 </div>
                 <div class="px-4 w-100 text-start" style="height: 50px;">
-                    <span>after clicking a plan click up or down </span>&nbsp;&nbsp;<button id="up" onclick="up();">Up</button>&nbsp;<button id="down" onclick="down();">Down</button>&nbsp;
+                    <span>select a plan and click up & down </span>&nbsp;&nbsp;<button id="up" onclick="up();">Up</button>&nbsp;<button id="down" onclick="down();">Down</button>&nbsp;
                 </div>
-                <div id="plans" class="d-inline-block overflow-auto text-start" style="height:500px">
+                <div id="plans" class="my-2 d-inline-block overflow-auto text-start" style="height:500px">
                     
                 </div>
                 <div class="d-flex justify-content-around align-items-center flex-row">
@@ -32,15 +32,15 @@
 <script>
     let chosenIndex = -1;
     const datas = [
-        {id:0, priority:1, content: "finish writing the document"},
-        {id:1, priority:2, content: "set AWS EC2 server"},
-        {id:2, priority:3, content: "set S3 development environment"},
-        {id:3, priority:4, content: "call the customer about the issue"},
-        {id:4, priority:5, content: "report to team leader"},
-        {id:5, priority:6, content: "send email to everybody about the issue"},
-        {id:6, priority:7, content: "get a customer support of the service"},
-        {id:7, priority:8, content: "write power point slides"},
-        {id:8, priority:9, content: "organize all the data on the excel file"},
+        {id:0, priority:1, content: "finish writing the document", detail: false, buttonPressed: false},
+        {id:1, priority:2, content: "set AWS EC2 server", detail: false, buttonPressed: false},
+        {id:2, priority:3, content: "set S3 development environment", detail: false, buttonPressed: false},
+        {id:3, priority:4, content: "call the customer about the issue", detail: false, buttonPressed: false},
+        {id:4, priority:5, content: "report to team leader", detail: false, buttonPressed: false},
+        {id:5, priority:6, content: "send email to everybody about the issue", detail: false, buttonPressed: false},
+        {id:6, priority:7, content: "get a customer support of the service", detail: false, buttonPressed: false},
+        {id:7, priority:8, content: "write power point slides", detail: false, buttonPressed: false},
+        {id:8, priority:9, content: "organize all the data on the excel file", detail: false, buttonPressed: false},
         //{id:9, priority:10, content: "have a meeting with marketing team"},
     ];
 
@@ -51,21 +51,51 @@
         console.log(chosenIndex);
         for (let i = 0; i < datas.length; i++) {
             const plan = document.createElement("div");
-            plan.setAttribute("class", "d-inline-block w-100");
-            let style = "height:80px;";
+            plan.setAttribute("class", "d-block w-100 float-end");
+            let style = "min-height:80px;";
             if (chosenIndex === i) {
                 style = style.concat("border:2px solid black;");
             }
             console.log(style);
             plan.setAttribute("style", style);
             plan.setAttribute("id", datas[i].id)
-            plan.innerHTML=`priority:${datas[i].priority}, content:${datas[i].content}`;
+            plan.innerHTML=`priority:${datas[i].priority}, content:${datas[i].content}<br/>`;
             
-            plansBoard.appendChild(plan)
+            plansBoard.appendChild(plan);
+
+            const button = document.createElement("button");
+            button.setAttribute("class", "float-end mx-4")
+            button.innerHTML = "read detail"
+            plan.appendChild(button);
+            const detail = document.createElement("div");
+            detail.setAttribute("style", "display:none");
+            detail.innerHTML="detail detail detail detail detail detail detail detail detail detail detail detail detail detail detail detail ";
+            plan.appendChild(detail);
         }
 
         for (let i = 0; i < plansBoard.children.length; i++) {
-            plansBoard.children[i].onclick = function (event) {
+            plansBoard.children[i].children[2].onclick = function (event) {
+                if (datas[i].detail) {
+                    event.target.style="display:inline-block";
+                } else {
+                    event.target.style="display:none";
+                }
+            }
+        }
+
+        for (let i = 0; i < plansBoard.children.length; i++) {
+            const detail = plansBoard.children[i].children[2];
+            const button = plansBoard.children[i].children[1];
+            const plan = plansBoard.children[i];
+            button.onclick = function (event) {
+                datas[i].detail = !datas[i].detail;
+                if (datas[i].detail === true) {
+                    detail.setAttribute("style", "display:inline-block");
+                } else if (datas[i].detail === false) {
+                    detail.setAttribute("style", "display:none");
+                }
+            }          
+            plan.onclick = function (event) {
                 chosenIndex = i;
                 event.target.style.border = "2px solid black";
                 for (let j = 0; j< plansBoard.children.length; j++) {
@@ -73,7 +103,9 @@
                         continue;
                     }    
                     const currentAtt = plansBoard.children[j].getAttribute("style");
-                    plansBoard.children[j].setAttribute("style", currentAtt + ";border:none")
+                    let newAtt = currentAtt.replace("border:", ""); 
+                    newAtt = currentAtt.replace("2px solid black;", ""); 
+                    plansBoard.children[j].setAttribute("style", newAtt);
                 }      
             }
         }
