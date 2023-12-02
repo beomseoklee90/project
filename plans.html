@@ -62,8 +62,11 @@
             plan.innerHTML=`(${datas[i].priority})      ${datas[i].content}<br/>`;
             
             plansBoard.appendChild(plan);
-
+            
             const checkbox = document.createElement("input");
+            if (chosenIndex === i) {
+                checkbox.checked = true;
+            }
             checkbox.setAttribute("type", "checkbox");
             checkbox.setAttribute("value","false")
             plan.appendChild(checkbox);
