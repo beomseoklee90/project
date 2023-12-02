@@ -12,7 +12,7 @@
         <div class="d-flex justify-content-center align-items-center mx-auto" style="height: 100vh;">
             <div class="d-inline-block bg-light text-end" style="width:450px;height:750px">
                 <div class="d-inline-block w-100" style="height:100px">
-                    <span id="korean" class="fs-4 fw-bold">Korean</span>&nbsp;/&nbsp;<span id="japanese" class="fs-4">Japanese</span>
+                    <span id="korean" class="fs-4 fw-bold">English</span>&nbsp;/&nbsp;<span id="japanese" class="fs-4">Korean</span>
                 </div>
                 <div class="px-4 w-100 text-start" style="height: 50px;">
                     <span>select a plan and click up & down </span>&nbsp;&nbsp;<button id="up" onclick="up();">Up</button>&nbsp;<button id="down" onclick="down();">Down</button>&nbsp;
@@ -23,7 +23,7 @@
                 <div class="d-flex justify-content-around align-items-center flex-row">
                     <div>Schedule</div>
                     <div class="fw-bold">Plans</div>
-                    <div>Todos</div>
+                    <div><a href="todos.html">Todos</a></div>
                     <div>Notes</div>
                 </div>
             </div>
@@ -32,15 +32,15 @@
 <script>
     let chosenIndex = -1;
     const datas = [
-        {id:0, priority:1, content: "finish writing the document", detail: false, buttonPressed: false},
-        {id:1, priority:2, content: "set AWS EC2 server", detail: false, buttonPressed: false},
-        {id:2, priority:3, content: "set S3 development environment", detail: false, buttonPressed: false},
-        {id:3, priority:4, content: "call the customer about the issue", detail: false, buttonPressed: false},
-        {id:4, priority:5, content: "report to team leader", detail: false, buttonPressed: false},
-        {id:5, priority:6, content: "send email to everybody about the issue", detail: false, buttonPressed: false},
-        {id:6, priority:7, content: "get a customer support of the service", detail: false, buttonPressed: false},
-        {id:7, priority:8, content: "write power point slides", detail: false, buttonPressed: false},
-        {id:8, priority:9, content: "organize all the data on the excel file", detail: false, buttonPressed: false},
+        {id:0, priority:1, content: "finish writing the document", detail: false},
+        {id:1, priority:2, content: "set AWS EC2 server", detail: false},
+        {id:2, priority:3, content: "set S3 development environment", detail: false},
+        {id:3, priority:4, content: "call the customer about the issue", detail: false},
+        {id:4, priority:5, content: "report to team leader", detail: false},
+        {id:5, priority:6, content: "send email to everybody about the issue", detail: false},
+        {id:6, priority:7, content: "get a customer support of the service", detail: false},
+        {id:7, priority:8, content: "write power point slides", detail: false},
+        {id:8, priority:9, content: "organize all the data on the excel file", detail: false},
         //{id:9, priority:10, content: "have a meeting with marketing team"},
     ];
 
@@ -59,9 +59,15 @@
             console.log(style);
             plan.setAttribute("style", style);
             plan.setAttribute("id", datas[i].id)
-            plan.innerHTML=`priority:${datas[i].priority}, content:${datas[i].content}<br/>`;
+            plan.innerHTML=`(${datas[i].priority})      ${datas[i].content}<br/>`;
             
             plansBoard.appendChild(plan);
+
+            const checkbox = document.createElement("input");
+            checkbox.setAttribute("type", "checkbox");
+            checkbox.setAttribute("value","false")
+            plan.appendChild(checkbox);
+
 
             const button = document.createElement("button");
             button.setAttribute("class", "float-end mx-4")
@@ -69,7 +75,14 @@
             plan.appendChild(button);
             const detail = document.createElement("div");
             detail.setAttribute("style", "display:none");
-            detail.innerHTML="detail detail detail detail detail detail detail detail detail detail detail detail detail detail detail detail ";
+            detail.innerHTML=`
+                <div class="p-3">
+                <div>progress for this plan: explanation</div>
+                <input type="checkbox"/>&nbsp;step1 <input type="checkbox"/>&nbsp;step2 <input type="checkbox"/>&nbsp;step3 <input type="checkbox"/>&nbsp;step4
+                <br/>
+                <span class="bg-primary text-white">due until 2024/01/03 </span>
+                </div>
+            `;
             plan.appendChild(detail);
         }
 
@@ -84,30 +97,36 @@
         }
 
         for (let i = 0; i < plansBoard.children.length; i++) {
-            const detail = plansBoard.children[i].children[2];
-            const button = plansBoard.children[i].children[1];
+            const detail = plansBoard.children[i].children[3];
+            const button = plansBoard.children[i].children[2];
+            const checkbox = plansBoard.children[i].children[1];
             const plan = plansBoard.children[i];
             button.onclick = function (event) {
                 datas[i].detail = !datas[i].detail;
                 if (datas[i].detail === true) {
-                    detail.setAttribute("style", "display:inline-block");
+                    detail.setAttribute("style", "display:block");
                 } else if (datas[i].detail === false) {
                     detail.setAttribute("style", "display:none");
                 }
-            }          
-            plan.onclick = function (event) {
-                chosenIndex = i;
-                event.target.style.border = "2px solid black";
-                for (let j = 0; j< plansBoard.children.length; j++) {
-                    if (i == j) {
-                        continue;
-                    }    
-                    const currentAtt = plansBoard.children[j].getAttribute("style");
-                    let newAtt = currentAtt.replace("border:", ""); 
-                    newAtt = currentAtt.replace("2px solid black;", ""); 
-                    plansBoard.children[j].setAttribute("style", newAtt);
-                }      
             }
+            checkbox.onclick = function (event) {
+                console.log(event.target.checked)
+                if (event.target.checked === false) {
+                    console.log("asdf")
+                    chosenIndex = -1
+                    plan.setAttribute("style", "min-height:80px");                    
+                } else {
+                    chosenIndex = i;
+                    plan.setAttribute("style", "border:2px solid black; min-height: 80px");
+                    for (let j = 0; j< plansBoard.children.length; j++) {
+                        if (i == j) {
+                            continue;
+                        }
+                        plansBoard.children[j].children[1].checked= false; 
+                        plansBoard.children[j].setAttribute("style", "min-height:80px");
+                    }
+                }
+            }    
         }
     }
 
