@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+</head>
+<body>
+
+        <div class="d-flex justify-content-center align-items-center mx-auto" style="height: 100vh;">
+            <div class="d-inline-block bg-light text-end" style="width:450px;height:750px">
+                <div class="d-inline-block w-100" style="height:100px">
+                    <span id="korean" class="fs-4 fw-bold">English</span>&nbsp;/&nbsp;<span id="japanese" class="fs-4">Korean</span>
+                </div>
+                <div class="px-4 w-100 text-start" style="height: 50px;">
+                    <span>신규 스케줄</span>
+                </div>
+                <div id="plans" class="border border-dark w-100 my-2 d-inline-block overflow-auto text-start" style="height:500px">
+                    <div class="text-left p-2">
+                        날짜&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text"/>
+                    </div>
+                    <div class="text-left p-2">
+                        일정 이름&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;<input type="text"/>
+                    </div>
+                    <div class="text-left p-2">
+                        <div>일정 내용</div>
+                        <textarea style="width:420px;height:150px"></textarea>
+                    </div>
+                    <div class="p-2">
+                        <div>관련된 plan</div>
+                        <div class="p-2 d-inline-block"></div>
+                        <div class="p-2 d-inline-block float-end">
+                            <button>plan 추가</button>
+                        </div>
+                    </div>
+                    <div class="p-2">
+                        <div>관련된 todo</div>
+                        <div class="p-2 d-inline-block"></div>
+                        <div class="p-2 float-end d-inline-block">
+                            <button>plan 추가</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="d-flex justify-content-around align-items-center flex-row">
+                    <div class="fw-bold"><a href="/project/schedule/calendar.html">Schedule</a></div>
+                    <div><a href="/project/todos.html">Plans</a></div>
+                    <div><a href="/project/todos.html">Todos</a></div>
+                    <div>Notes</div>
+                </div>
+            </div>
+        </div>
+</body>
+</html>
